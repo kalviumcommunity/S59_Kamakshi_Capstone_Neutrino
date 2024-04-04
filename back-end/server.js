@@ -5,11 +5,12 @@ const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const port = process.env.PORT || 8080;
+const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME;
 const MONGODB_URI = process.env.MONGODB_URI;
 
 app.use(express.json());
 
-mongoose.connect(MONGODB_URI, {
+mongoose.connect(`${MONGODB_URI}${MONGODB_DB_NAME}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     dbName: 'neutrinodb'
