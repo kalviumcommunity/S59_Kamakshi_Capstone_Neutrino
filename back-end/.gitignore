@@ -1,2 +1,6 @@
 node_modules
 package-lock.json
+bruno.json
+get testing.bru
+.env
+POST.bru
