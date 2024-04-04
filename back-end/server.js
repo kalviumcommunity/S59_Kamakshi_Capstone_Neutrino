@@ -1,11 +1,29 @@
+require('dotenv').config();
 const express = require('express');
-const axios = require('axios'); 
+const mongoose = require('mongoose');
+const userRoutes = require('./routes/userRoutes');
+
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
+const MONGODB_URI = process.env.MONGODB_URI;
+
+app.use(express.json());
+
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: 'neutrinodb'
+}).then(() => {
+    console.log("Connected to MongoDB");
+}).catch((err) => {
+    console.error("Error connecting to MongoDB:", err.message);
+});
+
+// Routes
+app.use(userRoutes);
 
 app.get('/apple', async (req, res) => {
     try {
-
         const response = await axios.get('https://newsapi.org/v2/everything', {
             params: {
                 q: 'apple',
@@ -22,5 +40,5 @@ app.get('/apple', async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log("Server is running");
+    console.log(`Server is running on port ${port}`);
 });
