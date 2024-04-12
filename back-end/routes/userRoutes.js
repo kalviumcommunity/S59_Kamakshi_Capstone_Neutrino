@@ -6,14 +6,15 @@ const router = express.Router();
 
 router.post('/users', async (req, res) => {
     try {
-        const { username, password, email } = req.body;
-        const user = new User({ username, password, email });
+        const { first_name, last_name, email, password, username, marketing_accept } = req.body;
+        const user = new User({ first_name, last_name, email, password, username, marketing_accept });
         await user.save();
         res.status(201).json(user);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 });
+
 
 router.put('/users/:id', async (req, res) => {
     try {
