@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -9,6 +10,11 @@ const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME;
 const MONGODB_URI = process.env.MONGODB_URI;
 
 app.use(express.json());
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 
 mongoose.connect(`${MONGODB_URI}${MONGODB_DB_NAME}`, {
     useNewUrlParser: true,
