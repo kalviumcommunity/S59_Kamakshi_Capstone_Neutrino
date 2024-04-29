@@ -1,70 +1,55 @@
-import React, { useRef, useState, useEffect } from "react";
-import { motion, useSpring } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useSpring, useTransform, useScroll } from "framer-motion";
 
-const HeroParallax = ({ products }) => {
+export const HeroParallax = ({ products }) => {
   const firstRow = products.slice(0, 5);
   const secondRow = products.slice(5, 10);
   const thirdRow = products.slice(10, 15);
   const ref = useRef(null);
-  const [scrollYProgress, setScrollYProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!ref.current) return;
-      const { scrollTop, scrollHeight, clientHeight } = ref.current;
-      const progress = scrollTop / (scrollHeight - clientHeight);
-      setScrollYProgress(progress);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
 
   const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
 
-  // Adjusting motion values to use useTransform directly inside useSpring
   const translateX = useSpring(
-    scrollYProgress,
-    springConfig,
-    [0, 1],
-    [0, 1000]
+    useTransform(scrollYProgress, [0, 1], [0, 1000]),
+    springConfig
   );
   const translateXReverse = useSpring(
-    scrollYProgress,
-    springConfig,
-    [0, 1],
-    [0, -1000]
+    useTransform(scrollYProgress, [0, 1], [0, -1000]),
+    springConfig
   );
   const rotateX = useSpring(
-    scrollYProgress,
-    springConfig,
-    [0, 0.2],
-    [15, 0]
+    useTransform(scrollYProgress, [0, 0.2], [15, 0]),
+    springConfig
   );
   const opacity = useSpring(
-    scrollYProgress,
-    springConfig,
-    [0, 0.2],
-    [0.2, 1]
+    useTransform(scrollYProgress, [0, 0.2], [0.2, 1]),
+    springConfig
   );
   const rotateZ = useSpring(
-    scrollYProgress,
-    springConfig,
-    [0, 0.2],
-    [20, 0]
+    useTransform(scrollYProgress, [0, 0.2], [20, 0]),
+    springConfig
   );
   const translateY = useSpring(
-    scrollYProgress,
-    springConfig,
-    [0, 0.2],
-    [-700, 500]
+    useTransform(scrollYProgress, [0, 0.2], [-700, 500]),
+    springConfig
   );
+
+  const scrollLeft = () => {
+    ref.current.scrollLeft -= 100; 
+  };
+
+  const scrollRight = () => {
+    ref.current.scrollLeft += 100; 
+  };
 
   return (
     <div
       ref={ref}
-      className="h-[300vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto perspective:1000px transform-style:preserve-3d"
+      className="h-[300vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto perspective-[1000px] transform-style-[preserve-3d] bg-black"
     >
       <Header />
       <motion.div
@@ -77,55 +62,65 @@ const HeroParallax = ({ products }) => {
         className=""
       >
         <motion.div className="flex flex-row-reverse space-x-reverse space-x-20 mb-20">
-          {firstRow.map((product, index) => (
+          {firstRow.map((product) => (
             <ProductCard
               product={product}
               translate={translateX}
-              key={index}
+              key={product.title}
             />
           ))}
         </motion.div>
         <motion.div className="flex flex-row  mb-20 space-x-20 ">
-          {secondRow.map((product, index) => (
+          {secondRow.map((product) => (
             <ProductCard
               product={product}
               translate={translateXReverse}
-              key={index}
+              key={product.title}
             />
           ))}
         </motion.div>
         <motion.div className="flex flex-row-reverse space-x-reverse space-x-20">
-          {thirdRow.map((product, index) => (
+          {thirdRow.map((product) => (
             <ProductCard
               product={product}
               translate={translateX}
-              key={index}
+              key={product.title}
             />
           ))}
         </motion.div>
       </motion.div>
+      {/* Scroll buttons */}
+      <button
+        className="fixed top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
+        onClick={scrollLeft}
+      >
+        {"<"}
+      </button>
+      <button
+        className="fixed top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
+        onClick={scrollRight}
+      >
+        {">"}
+      </button>
     </div>
   );
 };
 
-// Header and ProductCard components remain unchanged
-
-const Header = () => {
+export const Header = () => {
   return (
-    <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full  left-0 top-0">
+    <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full  left-0 top-0 bg-black">
       <h1 className="text-2xl md:text-7xl font-bold dark:text-white">
-        The Ultimate <br /> development studio
+        News Tailored to <br /> Your Interests
       </h1>
       <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200">
-        We build beautiful products with the latest technologies and frameworks.
-        We are a team of passionate developers and designers that love to build
-        amazing products.
+        Stay informed on a wide range of topics. We curate news articles from
+        various categories to keep you up-to-date.
       </p>
     </div>
   );
 };
 
-const ProductCard = ({ product, translate }) => {
+export const ProductCard = ({ product, translate }) => {
   return (
     <motion.div
       style={{
@@ -134,13 +129,14 @@ const ProductCard = ({ product, translate }) => {
       whileHover={{
         y: -20,
       }}
-      className="group/product h-96 w-[30rem] relative flex-shrink-0"
+      key={product.title}
+      className="group/product h-80 w-[25rem] relative flex-shrink-0"
     >
-      <a href={product.link} className="block group-hover/product:shadow-2xl ">
+      <a href={product.link} className="block group-hover/product:shadow-2xl">
         <img
           src={product.thumbnail}
-          height="600"
-          width="600"
+          height="400"
+          width="400"
           className="object-cover object-left-top absolute h-full w-full inset-0"
           alt={product.title}
         />
@@ -152,5 +148,3 @@ const ProductCard = ({ product, translate }) => {
     </motion.div>
   );
 };
-
-export default HeroParallax;
