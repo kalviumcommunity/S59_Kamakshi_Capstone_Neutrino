@@ -17,8 +17,6 @@ app.use(cors({
 }));
 
 mongoose.connect(`${MONGODB_URI}${MONGODB_DB_NAME}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
     dbName: 'neutrinodb'
 }).then(() => {
     console.log("Connected to MongoDB");
