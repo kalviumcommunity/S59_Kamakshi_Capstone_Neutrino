@@ -13,7 +13,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@react-three/drei": "^9.105.2",
-    "@react-three/fiber": "^8.16.1",
+    "@react-three/fiber": "^8.16.3",
     "amqplib": "^0.10.4",
     "axios": "^1.6.8",
     "clsx": "^2.1.0",
