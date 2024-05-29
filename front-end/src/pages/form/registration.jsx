@@ -43,7 +43,7 @@ const Registration = () => {
 
   const validateForm = (data) => {
     const errors = [];
-    if (!data.first_name || !data.last_name || !data.email || !data.password || !data.username || !data.password_confirmation) {
+    if (!data.email || !data.password || !data.username || !data.password_confirmation) {
       errors.push("All fields are required.");
     }
     if (data.password !== data.password_confirmation) {
@@ -106,35 +106,6 @@ const Registration = () => {
         </p>
 
               <div className="mt-8 grid grid-cols-6 gap-6">
-                {/* First Name */}
-                <div className="col-span-6 sm:col-span-3">
-                  <label htmlFor="FirstName" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    id="FirstName"
-                    name="first_name"
-                    value={formData.first_name}
-                    onChange={handleChange}
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 py-2 px-2"
-                  />
-                </div>
-
-                {/* Last Name */}
-                <div className="col-span-6 sm:col-span-3">
-                  <label htmlFor="LastName" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    id="LastName"
-                    name="last_name"
-                    value={formData.last_name}
-                    onChange={handleChange}
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 py-2 px-2"
-                  />
-                </div>
 
                 {/* Username */}
                 <div className="col-span-6 sm:col-span-3">
