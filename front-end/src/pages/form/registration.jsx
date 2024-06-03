@@ -33,7 +33,7 @@ const Registration = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/users', formData);
+      const response = await axios.post('https://s59-kamakshi-capstone-neutrino-1.onrender.com/users', formData);
       console.log(response.data);
       setSuccess(true);
     } catch (error) {
