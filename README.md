@@ -18,17 +18,17 @@ This project aims to develop a user-friendly news aggregator application that em
 
 Explore functionalities like user accounts, saved articles, search functionalities, and social sharing.
 
+### Deployment Links
+
+- **Frontend:** https://neutrinoo.netlify.app/
+- **Backend:** https://s59-kamakshi-capstone-neutrino-1.onrender.com
+
 ### Technology Stack 
 
 - **Frontend:** React 
 - **Backend:** Node.js 
 - **Database:** MongoDB
 - **Version Control:** Git
-
-### Deployment Links
-
-- **Frontend:** https://neutrinoo.netlify.app/
-- **Backend:** https://s59-kamakshi-capstone-neutrino-1.onrender.com
 
 ### Project Plan
 
