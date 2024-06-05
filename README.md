@@ -25,6 +25,11 @@ Explore functionalities like user accounts, saved articles, search functionaliti
 - **Database:** MongoDB
 - **Version Control:** Git
 
+### Deployment Links
+
+- **Frontend:** https://neutrinoo.netlify.app/
+- **Backend:** https://s59-kamakshi-capstone-neutrino-1.onrender.com
+
 ### Project Plan
 
 #### Phase 1: Planning & Research (Days 1-10):
