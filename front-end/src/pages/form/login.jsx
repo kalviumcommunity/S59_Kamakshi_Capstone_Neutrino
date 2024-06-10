@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { Link } from 'react-router-dom';
+import { auth, provider, signInWithRedirect, getRedirectResult } from './firebase'; 
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +16,32 @@ const Login = () => {
     message: '',
     severity: 'success',
   });
+
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) {
+          const user = result.user;
+          try {
+            const response = await axios.get(`http://localhost:8080/api/users?email=${user.email}`);
+            setNotification({ open: true, message: 'Login Successful', severity: 'success' });
+          } catch (error) {
+            if (error.response && error.response.status === 404) {
+              setNotification({ open: true, message: 'User not registered. Please sign up first.', severity: 'error' });
+            } else {
+              setNotification({ open: true, message: 'Google Sign-In Failed: ' + error.message, severity: 'error' });
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error:', error.message);
+        setNotification({ open: true, message: 'Google Sign-In Failed: ' + error.message, severity: 'error' });
+      }
+    };
+
+    handleRedirectResult();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,7 +60,7 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post('https://s59-kamakshi-capstone-neutrino-1.onrender.com/login', formData);
+      const response = await axios.post('http://localhost:8080/login', formData);
       console.log('Response:', response.data);
 
       if (response.data.success) {
@@ -44,6 +72,10 @@ const Login = () => {
       console.error('Error:', error);
       setNotification({ open: true, message: 'Invalid username or password', severity: 'error' });
     }
+  };
+
+  const handleGoogleSignIn = () => {
+    signInWithRedirect(auth, provider);
   };
 
   return (
@@ -59,9 +91,10 @@ const Login = () => {
 
         <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
           <div className="max-w-xl lg:max-w-3xl">
-            <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-              Welcome Back
-            </h1>
+            
+          <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl dark:text-white">
+                Welcome to Neutrino 🗞️
+          </h1>
 
             <p className="mt-4 leading-relaxed text-gray-500">
               Login to access your account and continue your journey with us.
@@ -112,11 +145,19 @@ const Login = () => {
                   Login
                 </button>
 
-                <p className="mt-4 text-sm text-gray-500 sm:mt-0">
+                <button
+                  type="button"
+                  onClick={handleGoogleSignIn}
+                  className="inline-block shrink-0 rounded-md border border-red-600 bg-red-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-red-600 focus:outline-none focus:ring active:text-red-500 ml-4"
+                >
+                  Sign in with Google
+                </button>
+
+                <p className="mt-4 text-sm text-gray-500 sm:mt-0 dark:text-gray-400">
                   Don't have an account? 
-                  <a href="/register" className="text-gray-700 underline">
+                  <Link to="/registration" className="text-gray-700 underline dark:text-gray-200 ml-1">
                     Register
-                  </a>.
+                  </Link>.
                 </p>
               </div>
             </form>

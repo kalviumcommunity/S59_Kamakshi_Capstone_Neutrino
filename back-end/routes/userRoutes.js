@@ -49,4 +49,21 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.get('/users', async (req, res) => {
+  const { email } = req.query;
+  if (!email) {
+    return res.status(400).json({ message: 'Email query parameter is required' });
+  }
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      return res.status(200).json(user);
+    } else {
+      return res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { auth, provider, signInWithRedirect, getRedirectResult } from './firebase';
 
 const Registration = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,28 @@ const Registration = () => {
     severity: 'success',
   });
 
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) {
+          const user = result.user;
+          const response = await axios.get(`http://localhost:8080/api/users?email=${user.email}`);
+          if (response.status === 200) {
+            setNotification({ open: true, message: 'User already registered with Google.', severity: 'success' });
+          } else {
+            setNotification({ open: true, message: 'Please complete the registration form.', severity: 'info' });
+          }
+        }
+      } catch (error) {
+        console.error('Error:', error.message);
+        setNotification({ open: true, message: 'Google Sign-In Failed: ' + error.message, severity: 'error' });
+      }
+    };
+
+    handleRedirectResult();
+  }, []);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevFormData) => ({
@@ -40,7 +63,7 @@ const Registration = () => {
     }
   
     try {
-      const response = await axios.post('https://s59-kamakshi-capstone-neutrino-1.onrender.com/users', formData);
+      const response = await axios.post('http://localhost:8080/users', formData);
       console.log(response.data);
       setNotification({ open: true, message: 'Signup Successful!', severity: 'success' });
     } catch (error) {
@@ -66,6 +89,11 @@ const Registration = () => {
     }
     return errors;
   };
+
+  const handleGoogleSignIn = () => {
+    signInWithRedirect(auth, provider);
+  };
+
 
   return (
     <section className="bg-white dark:bg-gray-900">
@@ -200,6 +228,14 @@ const Registration = () => {
                     </Link>.
                   </p>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={handleGoogleSignIn}
+                  className="inline-block shrink-0 rounded-md border border-red-600 bg-red-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-red-600 focus:outline-none focus:ring active:text-red-500 dark:hover:bg-red-700 dark:hover:text-white"
+                >
+                  Sign up with Google
+                </button>
               </div>
             </div>
           </main>

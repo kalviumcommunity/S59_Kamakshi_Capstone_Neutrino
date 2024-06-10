@@ -66,10 +66,7 @@ const Navbar = () => {
           <Link to="/news/science" className="hover:text-orange-500">SCIENCE & TECHNOLOGY</Link>
           <Link to="/news/health" className="hover:text-orange-500">HEALTH</Link>
           <Link to="/news/sports" className="hover:text-orange-500">SPORTS</Link>
-          <Link to="/news/auto" className="hover:text-orange-500">AUTO</Link>
           <Link to="/news/education" className="hover:text-orange-500">EDUCATION</Link>
-          <Link to="/news/lifestyle" className="hover:text-orange-500">LIFESTYLE</Link>
-          <Link to="/news/more" className="hover:text-orange-500">MORE</Link>
         </div>
         <div className="hidden md:flex space-x-4">
           <Link to="/registration" className="border border-orange-500 text-orange-500 py-1 px-3">LOGIN</Link>
@@ -88,14 +85,11 @@ const Navbar = () => {
           <li><Link to="/news/science" className="block hover:text-orange-500">SCIENCE & TECHNOLOGY</Link></li>
           <li><Link to="/news/health" className="block hover:text-orange-500">HEALTH</Link></li>
           <li><Link to="/news/sports" className="block hover:text-orange-500">SPORTS</Link></li>
-          <li><Link to="/news/auto" className="block hover:text-orange-500">AUTO</Link></li>
           <li><Link to="/news/education" className="block hover:text-orange-500">EDUCATION</Link></li>
-          <li><Link to="/news/lifestyle" className="block hover:text-orange-500">LIFESTYLE</Link></li>
-          <li><Link to="/news/more" className="block hover:text-orange-500">MORE</Link></li>
         </ul>
         <div className="flex flex-col space-y-2 px-4 pb-4">
-          <button className="border border-orange-500 text-orange-500 py-1 px-3">E-Paper</button>
-          <button className="bg-orange-500 py-1 px-3 rounded text-white hover:bg-orange-600">SUBSCRIBE</button>
+        <Link to="/registration" className="border border-orange-500 text-orange-500 py-1 px-3">LOGIN</Link>
+        <button className="bg-orange-500 py-1 px-3 rounded text-white hover:bg-orange-600">SUBSCRIBE</button>
         </div>
       </div>
     </header>
