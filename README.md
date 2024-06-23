@@ -81,4 +81,4 @@ This project welcomes contributions! Feel free to fork the repository and submit
 
 ### Author
 
-[Kamakshi Pandoh]
+[Kamakshi]
