@@ -69,6 +69,7 @@ const Login = () => {
         localStorage.setItem('token', token);
         
         setNotification({ open: true, message: 'Login Successful', severity: 'success' });
+        history.push('./profile');
       } else {
         setNotification({ open: true, message: 'Invalid username or password', severity: 'error' });
       }
