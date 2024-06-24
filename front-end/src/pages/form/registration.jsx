@@ -62,19 +62,21 @@ const Registration = () => {
       return;
     }
   
+    console.log("Submitting form data:", formData);  
+  
     try {
-      const response = await axios.post('http://localhost:8080/users', formData);
+      const response = await axios.post('http://localhost:8080/api/users', formData);
       console.log(response.data);
       setNotification({ open: true, message: 'Signup Successful!', severity: 'success' });
     } catch (error) {
-      console.error('Error:', error.message);
-      if (error.response && error.response.status === 404) {
-        setNotification({ open: true, message: 'Username or email already exists.', severity: 'error' });
+      console.error('Error:', error.response ? error.response.data : error.message);
+      if (error.response && error.response.status === 400) {
+        setNotification({ open: true, message: error.response.data.message, severity: 'error' });
       } else {
         setNotification({ open: true, message: 'Signup Failed: ' + error.message, severity: 'error' });
       }
     }
-  };  
+  };
 
   const validateForm = (data) => {
     const errors = [];
