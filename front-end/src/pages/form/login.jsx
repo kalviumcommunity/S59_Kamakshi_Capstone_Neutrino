@@ -53,17 +53,21 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!formData.username || !formData.password) {
       setNotification({ open: true, message: 'Please fill in all fields', severity: 'error' });
       return;
     }
-
+  
     try {
-      const response = await axios.post('http://localhost:8080/login', formData);
-      console.log('Response:', response.data);
-
+      const response = await axios.post('http://localhost:8080/api/login', formData);
+  
       if (response.data.success) {
+        const token = response.data.token;
+        console.log('JWT Token:', token); 
+        
+        localStorage.setItem('token', token);
+        
         setNotification({ open: true, message: 'Login Successful', severity: 'success' });
       } else {
         setNotification({ open: true, message: 'Invalid username or password', severity: 'error' });
@@ -72,7 +76,7 @@ const Login = () => {
       console.error('Error:', error);
       setNotification({ open: true, message: 'Invalid username or password', severity: 'error' });
     }
-  };
+  };  
 
   const handleGoogleSignIn = () => {
     signInWithRedirect(auth, provider);
